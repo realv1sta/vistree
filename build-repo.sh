@@ -6,10 +6,11 @@
 #   ./build-repo.sh andy scs        build only the named packages
 #
 # Environment:
-#   REPO      output directory for packages and the repo database (default: ./repo)
-#   BUILDDIR  makepkg build directory                         (default: ./.build)
-#   SRCDEST   downloaded source cache                         (default: ~/kernelbuild)
-#   DB_NAME   repository database name                        (default: vistree)
+#   REPO        output directory for packages and the repo database (default: ./repo)
+#   BUILDDIR    makepkg build directory                         (default: ./.build)
+#   SRCDEST     downloaded source cache                         (default: ~/kernelbuild)
+#   DB_NAME     repository database name                        (default: vistree)
+#   MAKEPKG_OPTS extra options passed to makepkg                (default: empty)
 set -euo pipefail
 
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -17,6 +18,7 @@ REPO="${REPO:-$ROOT/repo}"
 BUILDDIR="${BUILDDIR:-$ROOT/.build}"
 SRCDEST="${SRCDEST:-$HOME/kernelbuild}"
 DB_NAME="${DB_NAME:-vistree}"
+MAKEPKG_OPTS="${MAKEPKG_OPTS:-}"
 
 usage() {
 	cat <<EOF
@@ -30,6 +32,7 @@ Environment overrides:
   BUILDDIR=$BUILDDIR
   SRCDEST=$SRCDEST
   DB_NAME=$DB_NAME
+  MAKEPKG_OPTS=$MAKEPKG_OPTS
 EOF
 }
 
@@ -63,12 +66,13 @@ failures=()
 for dir in "${targets[@]}"; do
 	name="$(basename -- "$dir")"
 	printf '==> Building %s\n' "$name"
+	# shellcheck disable=SC2086 # MAKEPKG_OPTS is intentionally word-split
 	if ! (
 		cd -- "$dir"
 		PKGDEST="$REPO" \
 		BUILDDIR="$BUILDDIR/$name" \
 		SRCDEST="$SRCDEST" \
-			makepkg --force --noconfirm
+			makepkg --force --noconfirm $MAKEPKG_OPTS
 	); then
 		failures+=("$name")
 	fi

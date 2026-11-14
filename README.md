@@ -69,6 +69,29 @@ Packages are written to `repo/` and the database is refreshed with `repo-add`
 after each run. Use `REPO=docs ./build-repo.sh` if you want to publish the
 repository from a `docs/` directory on GitHub Pages instead.
 
+Extra `makepkg` flags go in `MAKEPKG_OPTS`. The most useful one is `--nocheck`,
+which skips `check()` and the (often very long) test suites — it also means the
+`checkdepends` of a recipe are not required to be installed:
+
+```sh
+MAKEPKG_OPTS="--nocheck" ./build-repo.sh
+```
+
+`build-repo.sh` keeps going when a package fails, lists the failures at the end,
+and still refreshes the database with whatever did build.
+
+### Parallel builds
+
+`/etc/makepkg.conf` ships with `MAKEFLAGS` commented out, which makes `makepkg`
+build single-threaded. That is harmless for the script packages but far too slow
+for `gcc`, `glibc`, and the kernel. Set it once for your user:
+
+```sh
+printf 'MAKEFLAGS="-j8"\n' >> ~/.makepkg.conf
+```
+
+(or export `MAKEFLAGS=-j8` when invoking `build-repo.sh`).
+
 ### Kernel source
 
 `visnux-kernel/PKGBUILD` builds from the official `linux-7.2.15.tar.xz` tarball
@@ -89,7 +112,7 @@ Add this to `/etc/pacman.conf`:
 ```ini
 [vistree]
 SigLevel = Optional TrustAll
-Server = file:///home/mark/vistree/repo
+Server = https://realv1sta.github.io/vistree/repo
 ```
 
 Then synchronize:
@@ -99,16 +122,22 @@ sudo pacman -Sy
 sudo pacman -Sl vistree
 ```
 
-When publishing to GitHub Pages, replace the `Server` line with the public URL,
-for example:
+For a local checkout instead of the published site, use:
 
 ```ini
-Server = https://realv1sta.github.io/vistree
+Server = file:///home/mark/vistree/repo
 ```
 
-If Pages serves the output from `/docs`, build with `REPO=docs` and select
-**main → /docs** as the Pages source. `docs/` is intentionally not ignored by
-git so it can be committed for Pages; `repo/` is ignored by default.
+When publishing to GitHub Pages, replace the `Server` line with the public URL
+of the committed `repo/` directory:
+
+```ini
+Server = https://realv1sta.github.io/vistree/repo
+```
+
+The `repo/` directory — the `.pkg.tar.zst` files plus `vistree.db` — is
+committed so that Pages serves it; `.build/`, `src/`, `pkg/`, and build output
+outside `repo/` stay ignored.
 
 ## Packages
 

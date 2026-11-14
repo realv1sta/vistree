@@ -1,10 +1,14 @@
-# makepkg output
+# makepkg build output
 /.build/
-/repo/
 pkg/
 src/
-*.pkg.tar.*
 *.src.tar.*
+*.pkg.tar.*
+
+# ...except the published repository, which GitHub Pages serves.
+!/repo/**
+# repo-add renames the previous database aside on every refresh
+/repo/*.old
 
 # kernel source tarball, if linked into the package directory
 /visnux-kernel/linux-*.tar.xz
