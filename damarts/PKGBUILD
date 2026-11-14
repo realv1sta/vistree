@@ -1,0 +1,13 @@
+pkgname=damarts
+pkgver=1.0
+pkgrel=1
+pkgdesc="displays a damarts quote."
+arch=('any')
+url=""
+license=('MIT')
+source=('damarts')
+sha256sums=('99d2105fe45afe650b2fb6197d21192cc39ad76b06b897f9880cb118494130e8')
+
+package() {
+  install -Dm755 "$srcdir/damarts" "$pkgdir/usr/bin/damarts"
+}

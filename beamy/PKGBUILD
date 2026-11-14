@@ -1,0 +1,13 @@
+pkgname=beamy
+pkgver=1.0
+pkgrel=1
+pkgdesc="Beamy package"
+arch=('any')
+url=""
+license=('MIT')
+source=('beamy')
+sha256sums=('4379afb840d7b86da14e74f021c8b07fd82e74e5aac5158d560d57fc0f76635a')
+
+package() {
+  install -Dm755 "$srcdir/beamy" "$pkgdir/usr/bin/beamy"
+}

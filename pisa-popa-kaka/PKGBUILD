@@ -1,0 +1,13 @@
+pkgname=pisa-popa-kaka
+pkgver=1.0
+pkgrel=1
+pkgdesc="Pisa Popa Kaka"
+arch=('any')
+url=""
+license=('MIT')
+source=('pisa-popa-kaka')
+sha256sums=('673d5643f775532aa627f1a15edcdbb7e228e870e8f8677924b1a53cf578ef35')
+
+package() {
+  install -Dm755 "$srcdir/pisa-popa-kaka" "$pkgdir/usr/bin/pisa-popa-kaka"
+}

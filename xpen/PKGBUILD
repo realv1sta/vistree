@@ -1,0 +1,13 @@
+pkgname=xpen
+pkgver=1.0
+pkgrel=1
+pkgdesc="quote"
+arch=('any')
+url=""
+license=('MIT')
+source=('xpen')
+sha256sums=('42b242f79a74f63d2b64cc5b528ddeec492decab184ffbbf731b1d331b811f50')
+
+package() {
+  install -Dm755 "$srcdir/xpen" "$pkgdir/usr/bin/xpen"
+}

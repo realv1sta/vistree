@@ -1,0 +1,13 @@
+pkgname=opsec
+pkgver=1.0
+pkgrel=2
+pkgdesc="Echoes opsec."
+arch=('any')
+url=""
+license=('MIT')
+source=('opsec')
+sha256sums=('3ef16fae52cc97af9412e80a901e57c2f1c1815f3d2dc98a7e65ef3aef637601')
+
+package() {
+  install -Dm755 "$srcdir/opsec" "$pkgdir/usr/bin/opsec"
+}

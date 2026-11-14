@@ -1,0 +1,10 @@
+# makepkg output
+/.build/
+/repo/
+pkg/
+src/
+*.pkg.tar.*
+*.src.tar.*
+
+# kernel source tarball, if linked into the package directory
+/visnux-kernel/linux-*.tar.xz

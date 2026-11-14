@@ -1,0 +1,13 @@
+pkgname=simpleroot
+pkgver=1.0
+pkgrel=1
+pkgdesc="A script to simplify the process of chrooting into a new environment without manually typing the required commands to mount the virtual filesystems!"
+arch=('any')
+url=""
+license=('MIT')
+source=('simpleroot')
+sha256sums=('5be94d5c52480b547104df715319d59e62b4b0348edc6490579bcada32a1d123')
+
+package() {
+  install -Dm755 "$srcdir/simpleroot" "$pkgdir/usr/bin/simpleroot"
+}

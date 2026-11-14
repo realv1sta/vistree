@@ -1,0 +1,13 @@
+pkgname=lfsinstaller
+pkgver=1.0
+pkgrel=1
+pkgdesc="installs linux from scratch maybe"
+arch=('any')
+url=""
+license=('MIT')
+source=('lfsinstaller')
+sha256sums=('21b508bd7da4c0f715cb72ed5562f6e3fb0ec8666296bac9130f2eda9a52edd1')
+
+package() {
+  install -Dm755 "$srcdir/lfsinstaller" "$pkgdir/usr/bin/lfsinstaller"
+}

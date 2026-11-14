@@ -1,0 +1,13 @@
+pkgname=victo
+pkgver=1.0
+pkgrel=1
+pkgdesc="Mcdonalds."
+arch=('any')
+url=""
+license=('MIT')
+source=('victo')
+sha256sums=('b063c0c19973d9c4f738335f83ef2c02d777e7cfa2f3c204c7bc8442960a3aac')
+
+package() {
+  install -Dm755 "$srcdir/victo" "$pkgdir/usr/bin/victo"
+}

@@ -1,0 +1,13 @@
+pkgname=fly-facts
+pkgver=1.0
+pkgrel=1
+pkgdesc="Fun facts about airplanes."
+arch=('any')
+url=""
+license=('MIT')
+source=('fly-facts')
+sha256sums=('f62a5c8c2202f7423624cfd58a551ff6af362cb3403d969ff374f137a214c195')
+
+package() {
+  install -Dm755 "$srcdir/fly-facts" "$pkgdir/usr/bin/fly-facts"
+}

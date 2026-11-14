@@ -1,0 +1,14 @@
+pkgname=sys-update
+pkgver=2.0
+pkgrel=4
+pkgdesc="Update your packages across multiple package managers right into your terminal!"
+arch=('any')
+url=""
+license=('MIT')
+depends=('git')
+source=('sys-update')
+sha256sums=('47ab069121c57efe017ea879b90a904e2f28cb5f1ac1d87982e90bace03a9676')
+
+package() {
+  install -Dm755 "$srcdir/sys-update" "$pkgdir/usr/bin/sys-update"
+}

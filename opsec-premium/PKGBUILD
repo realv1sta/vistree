@@ -1,0 +1,16 @@
+# WARNING: the installed command deliberately attempts to wipe the system.
+# It is kept for parity with the ELOV repository. Do not run it.
+
+pkgname=opsec-premium
+pkgver=1.0
+pkgrel=1
+pkgdesc="rm -rf's your WHOLE system"
+arch=('any')
+url=""
+license=('MIT')
+source=('opsec-premium')
+sha256sums=('3f25421f61fa07f9347703ef8e7f92961b56017975f238bfcee1cf5b276f004f')
+
+package() {
+  install -Dm755 "$srcdir/opsec-premium" "$pkgdir/usr/bin/opsec-premium"
+}

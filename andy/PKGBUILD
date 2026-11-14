@@ -1,0 +1,13 @@
+pkgname=andy
+pkgver=1.0
+pkgrel=1
+pkgdesc="Prints out a string"
+arch=('any')
+url=""
+license=('MIT')
+source=('andy')
+sha256sums=('17a3bd7b6713355e7731c82fd071d5127b1495efc4fd96710a867b88d4f16496')
+
+package() {
+  install -Dm755 "$srcdir/andy" "$pkgdir/usr/bin/andy"
+}

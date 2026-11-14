@@ -1,0 +1,13 @@
+pkgname=fakerm
+pkgver=1.0
+pkgrel=1
+pkgdesc="deletes your system (not quite)"
+arch=('any')
+url=""
+license=('MIT')
+source=('fakerm')
+sha256sums=('2507a6111089884cd48d895248dded6354a7f227a1b68ab513109d20ee12b7ff')
+
+package() {
+  install -Dm755 "$srcdir/fakerm" "$pkgdir/usr/bin/fakerm"
+}

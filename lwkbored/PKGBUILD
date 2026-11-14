@@ -1,0 +1,13 @@
+pkgname=lwkbored
+pkgver=1.0
+pkgrel=1
+pkgdesc="yo vista do ur repos have Nvidia dkms 580?"
+arch=('any')
+url=""
+license=('MIT')
+source=('lwkbored')
+sha256sums=('4f4a4dc6582788fe61e6580a7f34236c7d94566f3facc6cc3cb907cb14a12475')
+
+package() {
+  install -Dm755 "$srcdir/lwkbored" "$pkgdir/usr/bin/lwkbored"
+}

@@ -1,0 +1,13 @@
+pkgname=hi
+pkgver=1.0
+pkgrel=1
+pkgdesc="hi."
+arch=('any')
+url=""
+license=('MIT')
+source=('hi')
+sha256sums=('fcb3f46ed12ddea79e567de669518ed87da698ba6175ae8ec6379712f65b8138')
+
+package() {
+  install -Dm755 "$srcdir/hi" "$pkgdir/usr/bin/hi"
+}

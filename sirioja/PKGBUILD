@@ -1,0 +1,13 @@
+pkgname=sirioja
+pkgver=1.0
+pkgrel=1
+pkgdesc="*blurred out*"
+arch=('any')
+url=""
+license=('MIT')
+source=('sirioja')
+sha256sums=('88daa2f535601519013c9c3028d48df472e364281d55c603e6962758930cbfc6')
+
+package() {
+  install -Dm755 "$srcdir/sirioja" "$pkgdir/usr/bin/sirioja"
+}

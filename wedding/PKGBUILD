@@ -1,0 +1,13 @@
+pkgname=wedding
+pkgver=1.0
+pkgrel=1
+pkgdesc="Wedding simulator"
+arch=('any')
+url=""
+license=('MIT')
+source=('wedding')
+sha256sums=('a9c5386195ac4fd38818ab24e49367eb9e203c1f38fed7b4de55eded8c32224c')
+
+package() {
+  install -Dm755 "$srcdir/wedding" "$pkgdir/usr/bin/wedding"
+}

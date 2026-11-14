@@ -1,0 +1,13 @@
+pkgname=mayoo
+pkgver=1.0
+pkgrel=1
+pkgdesc="quote"
+arch=('any')
+url=""
+license=('MIT')
+source=('mayoo')
+sha256sums=('4a243982f23b55cdb52d3b21de0d4b1e12733982fc20b3b5622ec3df07a297b1')
+
+package() {
+  install -Dm755 "$srcdir/mayoo" "$pkgdir/usr/bin/mayoo"
+}
