@@ -10,6 +10,13 @@ built from source instead of committed as binaries).
 The package payloads were reconstructed from the packages currently published
 in `ELOV`, so the installed files match what `ELOV` ships.
 
+In addition to the hand-written recipes above, the tree carries the **official
+Arch Linux recipes** for the base system, pulled from
+`gitlab.archlinux.org/archlinux/packaging/packages`. Those directories are
+verbatim mirrors of upstream (including their `.SRCINFO` and patch files), so
+building them produces packages identical to the ones in Arch's `core` and
+`extra`.
+
 ## Layout
 
 ```
@@ -32,9 +39,11 @@ Rust project fetched from its upstream release tarball.
 ## Requirements
 
 - `base-devel`
-- `git` (for `sys-update` at runtime)
+- `git` (for `sys-update` at runtime, and to fetch upstream recipes)
 - `rust` (to build `scs`)
 - kernel build tools for `visnux-kernel`: `bc cpio gettext libelf pahole perl tar xz`
+- network access when building the official Arch recipes — they download their
+  own sources (and some verify PGP signatures)
 
 ## Building
 
@@ -127,6 +136,56 @@ git so it can be committed for Pages; `repo/` is ignored by default.
 | `xpen` | 1.0-1 | Quote |
 | `visnux-kernel` | 7.2.15-1 | Visnux kernel for gaming and development |
 | `visnux-kernel-headers` | 7.2.15-1 | Headers for building out-of-tree modules |
+
+## Official Arch recipes
+
+Mirrored from Arch's packaging git, unmodified. Versions match what a current
+Arch `core`/`extra` sync would give you.
+
+| Package | Version | Notes |
+| --- | --- | --- |
+| `glibc` | 2.44+r50+g1848099f063e-1 | also builds `lib32-glibc`, `glibc-locales` |
+| `gcc` | 16.2.1+r23+gd564253eb6c8-1 | split into `gcc`, `gcc-libs`, `libstdc++`, … |
+| `git` | 2.56.1-1 | also builds `git-zsh-completion` |
+| `pacman` | 7.1.0.r9.g54d9411-4 | the package manager itself |
+| `pacman-mirrorlist` | 20260610-1 | |
+| `xkeyboard-config` | 2.49-1 | XKB keyboard layouts ("xkb") |
+| `pipewire` | 1:1.6.11-1 | split into `pipewire`, `pipewire-audio`, `pipewire-pulse`, `pipewire-alsa`, … |
+| `wireplumber` | 0.5.19-1 | PipeWire session manager ("plumber"), also `libwireplumber` |
+| `bash` | 5.3.20-1 | |
+| `bzip2` | 1.0.8-6 | |
+| `coreutils` | 9.12-3 | |
+| `diffutils` | 3.12-2 | |
+| `filesystem` | 2025.10.12-1 | base directory layout |
+| `findutils` | 4.11.0-1 | |
+| `gawk` | 5.4.1-1 | |
+| `grep` | 3.12-2 | |
+| `gzip` | 1.15-1 | |
+| `iana-etc` | 20260617-1 | network services / protocols |
+| `less` | 710-1 | |
+| `libarchive` | 3.8.11-2 | `bsdtar`, used by `pacman` |
+| `licenses` | 20240728-1 | |
+| `ncurses` | 6.6-2 | |
+| `openssl` | 4.1.0-1 | |
+| `pkgconf` | 3.0.10-1 | |
+| `procps-ng` | 4.0.7-1 | `ps`, `top`, `free` |
+| `readline` | 8.3.6-1 | |
+| `sed` | 4.10-2 | |
+| `shadow` | 4.20.0.arch1-1 | `login`, `su`, `passwd` |
+| `tar` | 1.35-5 | also builds `tar-scripts` |
+| `tzdata` | 2026f-1 | |
+| `util-linux` | 2.42.4-1 | also builds `util-linux-libs` |
+| `which` | 2.25-1 | |
+| `xz` | 5.8.4-1 | |
+| `zstd` | 1.5.7-3 | |
+
+Because these recipes are upstream Arch's, `gcc` and `glibc` in particular take
+a long time to compile (and `glibc` needs `linux-api-headers` installed). Build
+the small ones first:
+
+```sh
+./build-repo.sh which licenses pkgconf iana-etc tzdata
+```
 
 ## Warning
 
