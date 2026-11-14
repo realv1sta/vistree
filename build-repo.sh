@@ -56,7 +56,15 @@ done
 if ((${#targets[@]} == 0)); then
 	while IFS= read -r pkgbuild; do
 		targets+=("$(dirname -- "$pkgbuild")")
-	done < <(find "$ROOT" -mindepth 2 -maxdepth 2 -name PKGBUILD -print | sort)
+	done < <(
+		find "$ROOT" -mindepth 2 -maxdepth 3 -name PKGBUILD -print | sort |
+			while IFS= read -r pkgbuild; do
+				# Skip recipes nested inside another recipe's directory.
+				if [[ ! -f "$(dirname "$(dirname "$pkgbuild")")/PKGBUILD" ]]; then
+					printf '%s\n' "$pkgbuild"
+				fi
+			done
+	)
 fi
 
 mkdir -p "$REPO" "$BUILDDIR"
@@ -64,13 +72,18 @@ mkdir -p "$REPO" "$BUILDDIR"
 failures=()
 
 for dir in "${targets[@]}"; do
-	name="$(basename -- "$dir")"
+	if [[ "$dir" == "$ROOT"/* ]]; then
+		name="${dir#"$ROOT"/}" # e.g. "andy" or "artix/system/bash"
+	else
+		name="$(basename -- "$dir")"
+	fi
+	key="${name//\//-}" # unique per recipe, safe as a directory name
 	printf '==> Building %s\n' "$name"
 	# shellcheck disable=SC2086 # MAKEPKG_OPTS is intentionally word-split
 	if ! (
 		cd -- "$dir"
 		PKGDEST="$REPO" \
-		BUILDDIR="$BUILDDIR/$name" \
+		BUILDDIR="$BUILDDIR/$key" \
 		SRCDEST="$SRCDEST" \
 			makepkg --force --noconfirm $MAKEPKG_OPTS
 	); then

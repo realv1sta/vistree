@@ -21,20 +21,50 @@ building them produces packages identical to the ones in Arch's `core` and
 
 ```
 vistree/
-├── andy/
+├── andy/                    # your own hand-written recipes
 │   ├── PKGBUILD
 │   └── andy                 # script installed by the package
-├── ...
+├── ...                      # 21 of these, plus 34 curated Arch recipes
+├── arch/                    # mirrored Arch recipes (gitlab.archlinux.org)
+│   └── <pkgbase>/PKGBUILD
+├── artix/                   # mirrored Artix recipes (gitea.artixlinux.org)
+│   └── <pkgbase>/PKGBUILD
 ├── visnux-kernel/
 │   ├── PKGBUILD             # split package: visnux-kernel + visnux-kernel-headers
 │   └── config               # kernel configuration
 ├── build-repo.sh
-└── repo/                    # generated, not committed
+└── repo/                    # built packages + vistree.db, committed for Pages
 ```
+
+Recipes live at three depths: top level (yours + the curated Arch set),
+`arch/<pkgbase>/`, and `artix/<pkgbase>/`. `build-repo.sh` discovers all three
+and uses the recipe's path as its build-directory key, so `bash` and
+`artix/bash` can coexist without clobbering each other's build tree.
 
 Every simple script package uses a local source file from its own directory, so
 a package can be built without network access. `scs` is the exception: it is a
 Rust project fetched from its upstream release tarball.
+
+## Mirrored recipes
+
+Two upstream recipe sets are mirrored into the tree so the whole distro can be
+rebuilt from this one repository:
+
+| Directory | Upstream | Count |
+| --- | --- | --- |
+| `arch/` | `gitlab.archlinux.org/archlinux/packaging/packages` | 14,895 pkgbases (15,560 packages once splits are counted) |
+| `artix/` | `gitea.artixlinux.org/packages` | 7,410 pkgbases (9,756 packages across `system`/`world`/`lib32`/`galaxy`) |
+
+Both are mirrored as-is from upstream, with one exception: `LICENSES/` and
+`keys/` are stripped from the Arch recipes. No PKGBUILD in the set references
+either directory — `validpgpkeys` is resolved from your local GPG keyring — and
+they account for 36% of the recipe tree.
+
+Artix's `world` and `lib32` largely rebuild Arch's `extra` and `multilib`, so
+some package names appear in both mirrors. Building both would produce two
+packages with the same name; prefer `arch/` for anything that exists in both,
+and build `artix/system` + `artix/galaxy` for the Artix-specific content
+(non-systemd service units, `galaxy` extras).
 
 ## Requirements
 
